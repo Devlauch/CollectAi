@@ -1,11 +1,23 @@
-# Node
-node_modules/
-dist/
-
-# Environment files
+# Environment variables (never commit real credentials)
 .env
 server/.env
+client/.env
+
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build output
+client/dist/
+client/build/
+dist/
 
 # Logs
 logs/
 *.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
