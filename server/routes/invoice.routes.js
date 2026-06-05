@@ -5,7 +5,8 @@ import {
     getInvoices,
     getInvoiceById,
     updateInvoice,
-    deleteInvoice
+    deleteInvoice,
+    getReceivedInvoices,
 } from "../controllers/invoice.controller.js";
 
 import { protect } from "../middleware/auth.middleware.js";
@@ -17,6 +18,8 @@ router.use(protect);
 router.post('/', createInvoice);
 
 router.get('/', getInvoices);
+
+router.get('/received', getReceivedInvoices);
 
 router.get('/:id', getInvoiceById);
 
