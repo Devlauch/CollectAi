@@ -41,6 +41,10 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    lastEmailSentAt: {
+        type: Date,
+        default: null
+    },
 }, { timestamps: true });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);

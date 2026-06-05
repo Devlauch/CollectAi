@@ -1,5 +1,6 @@
 import Invoice from '../models/invoice.model.js';
 import mongoose from 'mongoose';
+import { sendEmail } from '../utils/sendEmail.js';
 
 export const generateReminderMessage = async (req, res) => {
   try {
@@ -42,7 +43,17 @@ export const generateReminderMessage = async (req, res) => {
       return res.status(502).json({ message: 'Failed to generate reminder from OpenAI response' });
     }
 
-    await Invoice.findByIdAndUpdate(invoice._id, { $inc: { remainderCount: 1 } });
+    await Invoice.findByIdAndUpdate(invoice._id, {
+      $inc: { remainderCount: 1 },
+      lastEmailSentAt: new Date(),
+    });
+
+    // Send email if SMTP is configured
+    const subject = `Payment Reminder — INR ${invoice.amount}`;
+    const html = `<p>${message.replace(/\n/g, '<br/>')}</p>${invoice.paymentLink ? `<p><a href="${invoice.paymentLink}">Pay Now</a></p>` : ''}`;
+    sendEmail({ to: invoice.clientEmail, subject, html }).catch(err =>
+      console.error('[reminder] Email send failed:', err.message)
+    );
 
     res.status(200).json({ message });
   } catch (error) {
