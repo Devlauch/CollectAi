@@ -1,5 +1,6 @@
 ﻿import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Lightfall from "../components/Lightfall";
 
 const FEATURES = [
   {
@@ -56,34 +57,62 @@ export default function HomePage() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white overflow-x-hidden">
+    <div className="relative isolate min-h-screen bg-[#0a0a0f] text-white overflow-x-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+        <Lightfall
+          colors={['#A6C8FF', '#5227FF', '#FF9FFC']}
+          backgroundColor="#0A29FF"
+          speed={0.5}
+          streakCount={2}
+          streakWidth={1}
+          streakLength={1}
+          glow={1}
+          density={0.6}
+          twinkle={1}
+          zoom={3}
+          backgroundGlow={0.5}
+          opacity={1}
+          mouseInteraction
+          mouseStrength={0.5}
+          mouseRadius={1}
+          color1="#A6C8FF"
+          color2="#5227FF"
+          color3="#FF9FFC"
+        />
+      </div>
 
+      <div className="relative z-20">
       {/* NAV */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#0a0a0f]/90 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
-              </svg>
+      <nav className="fixed top-4 inset-x-0 z-50 px-4 sm:px-6">
+        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-[#0b1020]/30 shadow-[0_18px_60px_rgba(0,0,0,0.42)] backdrop-blur-[30px] ring-1 ring-white/5">
+          <div className="absolute inset-0 bg-linear-to-r from-[#A6C8FF]/10 via-[#5227FF]/5 to-[#FF9FFC]/10 opacity-90 pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,159,252,0.12),transparent_35%)] pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+          <div className="relative h-16 px-6 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#A6C8FF]/85 via-white/15 to-[#FF9FFC]/85 border border-white/15 flex items-center justify-center shadow-lg shadow-[#5227FF]/15">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
+                </svg>
+              </div>
+              <span className="font-bold text-base tracking-tight text-white/95">CollectAI</span>
             </div>
-            <span className="font-bold text-base tracking-tight">CollectAI</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {user ? (
-              <Link to="/dashboard" className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all">
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link to="/login" className="text-slate-400 hover:text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-white/5 transition-all">
-                  Sign in
+            <div className="flex items-center gap-2">
+              {user ? (
+                <Link to="/dashboard" className="bg-white/10 hover:bg-white/15 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all border border-white/10 backdrop-blur-md">
+                  Dashboard
                 </Link>
-                <Link to="/register" className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-indigo-500/20">
-                  Get started free
-                </Link>
-              </>
-            )}
+              ) : (
+                <>
+                  <Link to="/login" className="text-slate-200/80 hover:text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-white/10 transition-all border border-transparent hover:border-white/10">
+                    Sign in
+                  </Link>
+                  <Link to="/register" className="bg-white/90 hover:bg-white text-black px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-[#5227FF]/10 border border-white/10 backdrop-blur-md">
+                    Get started free
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </nav>
@@ -91,36 +120,36 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative pt-36 pb-24 px-6">
         {/* background glows */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-40 left-1/4 w-[300px] h-[300px] bg-violet-600/8 rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-200 h-125 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-40 left-1/4 w-75 h-75 bg-violet-600/8 rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           {/* LEFT */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium px-3.5 py-1.5 rounded-full mb-7">
+            <div className="inline-flex items-center gap-2 bg-white/6 border border-white/10 text-slate-200 text-xs font-medium px-3.5 py-1.5 rounded-full mb-7 backdrop-blur-md">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
               Powered by GPT-4o mini
             </div>
 
             <h1 className="text-5xl sm:text-6xl font-black leading-[1.08] tracking-tight mb-6">
               Stop chasing.<br />
-              <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-[#A6C8FF] via-[#FF9FFC] to-[#A6C8FF] bg-clip-text text-transparent">
                 Start collecting.
               </span>
             </h1>
 
-            <p className="text-slate-400 text-lg leading-relaxed mb-9 max-w-lg">
+            <p className="text-slate-300/80 text-lg leading-relaxed mb-9 max-w-lg">
               CollectAI tracks your invoices and generates personalised AI payment reminders ? so you spend less time chasing clients and more time growing your business.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-12">
-              <Link to="/register" className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-7 py-3.5 rounded-xl transition-all text-sm shadow-xl shadow-indigo-500/25">
+              <Link to="/register" className="inline-flex items-center justify-center gap-2 bg-linear-to-r from-[#A6C8FF] via-[#5227FF] to-[#FF9FFC] text-white font-semibold px-7 py-3.5 rounded-xl transition-all text-sm shadow-xl shadow-[#5227FF]/25 ring-1 ring-white/10">
                 Start free today
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </Link>
-              <Link to="/login" className="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium px-7 py-3.5 rounded-xl transition-all text-sm">
+              <Link to="/login" className="inline-flex items-center justify-center gap-2 bg-white/6 hover:bg-white/10 border border-white/10 text-slate-100 font-medium px-7 py-3.5 rounded-xl transition-all text-sm backdrop-blur-md">
                 Sign in
               </Link>
             </div>
@@ -128,8 +157,8 @@ export default function HomePage() {
             <div className="flex items-center gap-8">
               {[['Free', 'to start'], ['AI', 'powered'], ['100%', 'private']].map(([v, l]) => (
                 <div key={l}>
-                  <div className="text-xl font-bold text-white">{v}</div>
-                  <div className="text-slate-500 text-xs">{l}</div>
+                  <div className="text-xl font-bold text-white/95">{v}</div>
+                  <div className="text-slate-400 text-xs">{l}</div>
                 </div>
               ))}
             </div>
@@ -137,42 +166,42 @@ export default function HomePage() {
 
           {/* RIGHT ? mock invoice card */}
           <div className="relative hidden lg:block">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-violet-500/5 rounded-3xl blur-xl" />
-            <div className="relative bg-slate-900/80 border border-white/10 rounded-3xl p-6 backdrop-blur-sm shadow-2xl">
+            <div className="absolute inset-0 bg-linear-to-br from-[#A6C8FF]/12 via-[#5227FF]/8 to-[#FF9FFC]/10 rounded-3xl blur-xl" />
+            <div className="relative bg-[#0b1020]/45 border border-white/10 rounded-3xl p-6 backdrop-blur-2xl shadow-[0_22px_70px_rgba(0,0,0,0.35)] ring-1 ring-white/5">
               {/* mini header */}
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <p className="text-xs text-slate-500 mb-0.5">Invoice #1042</p>
-                  <p className="font-semibold text-white">Rahul Sharma</p>
+                  <p className="text-xs text-slate-400 mb-0.5">Invoice #1042</p>
+                  <p className="font-semibold text-white/95">Rahul Sharma</p>
                 </div>
-                <span className="text-xs font-medium bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full">Pending</span>
+                <span className="text-xs font-medium bg-white/8 text-slate-200 border border-white/10 px-2.5 py-1 rounded-full backdrop-blur-md">Pending</span>
               </div>
               <div className="flex items-end justify-between mb-5 pb-5 border-b border-white/5">
                 <div>
-                  <p className="text-slate-500 text-xs mb-1">Amount due</p>
-                  <p className="text-3xl font-black text-white">&#8377;24,500</p>
+                  <p className="text-slate-400 text-xs mb-1">Amount due</p>
+                  <p className="text-3xl font-black text-white/95">&#8377;24,500</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-slate-500 text-xs mb-1">Due date</p>
-                  <p className="text-sm font-medium text-red-400">3 days overdue</p>
+                  <p className="text-slate-400 text-xs mb-1">Due date</p>
+                  <p className="text-sm font-medium text-[#FF9FFC]">3 days overdue</p>
                 </div>
               </div>
               {/* AI reminder */}
-              <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-2xl p-4">
+              <div className="bg-white/6 border border-white/10 rounded-2xl p-4 backdrop-blur-md">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-5 h-5 rounded-md bg-indigo-500/20 flex items-center justify-center">
-                    <svg className="w-3 h-3 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="w-5 h-5 rounded-md bg-linear-to-br from-[#A6C8FF]/25 to-[#FF9FFC]/25 flex items-center justify-center border border-white/10">
+                    <svg className="w-3 h-3 text-white/85" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
                     </svg>
                   </div>
-                  <span className="text-xs font-semibold text-indigo-300">AI Generated Reminder</span>
+                  <span className="text-xs font-semibold text-slate-100">AI Generated Reminder</span>
                 </div>
-                <p className="text-slate-300 text-xs leading-relaxed">
+                <p className="text-slate-300/85 text-xs leading-relaxed">
                   "Hi Rahul, I hope you're doing well. This is a gentle reminder that invoice #1042 for &#8377;24,500 was due 3 days ago. Could you please arrange payment at your earliest convenience? Thank you!"
                 </p>
                 <div className="flex gap-2 mt-3">
-                  <button className="flex-1 bg-indigo-600 text-white text-xs font-medium py-1.5 rounded-lg">Copy</button>
-                  <button className="flex-1 bg-white/5 text-slate-300 text-xs font-medium py-1.5 rounded-lg border border-white/10">Regenerate</button>
+                  <button className="flex-1 bg-white/10 text-white text-xs font-medium py-1.5 rounded-lg border border-white/10">Copy</button>
+                  <button className="flex-1 bg-white/5 text-slate-200 text-xs font-medium py-1.5 rounded-lg border border-white/10">Regenerate</button>
                 </div>
               </div>
             </div>
@@ -182,21 +211,22 @@ export default function HomePage() {
 
       {/* FEATURES */}
       <section className="py-24 px-6 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-950/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#5227FF]/8 to-transparent pointer-events-none" />
         <div className="relative max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-indigo-400 text-sm font-semibold uppercase tracking-widest mb-3">Features</p>
-            <h2 className="text-4xl font-black mb-4">Everything to collect faster</h2>
-            <p className="text-slate-400 max-w-lg mx-auto">No spreadsheets. No chasing. Just smart tools that work while you focus on delivering great work.</p>
+            <p className="text-[#A6C8FF] text-sm font-semibold uppercase tracking-widest mb-3">Features</p>
+            <h2 className="text-4xl font-black mb-4 text-white/96">Everything to collect faster</h2>
+            <p className="text-slate-300/75 max-w-lg mx-auto">No spreadsheets. No chasing. Just smart tools that work while you focus on delivering great work.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {FEATURES.map(f => (
-              <div key={f.title} className={`bg-gradient-to-br ${f.color} border rounded-2xl p-6 hover:scale-[1.02] transition-transform`}>
+              <div key={f.title} className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl shadow-[0_16px_50px_rgba(0,0,0,0.18)] transition-transform hover:scale-[1.02]">
+                <div className={`absolute inset-x-0 top-0 h-px bg-linear-to-r ${f.color} opacity-70`} />
                 <svg className={`w-7 h-7 mb-4 ${f.iconColor}`} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d={f.icon} />
                 </svg>
-                <h3 className="font-bold text-white mb-2">{f.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
+                <h3 className="font-bold text-white/95 mb-2">{f.title}</h3>
+                <p className="text-slate-300/75 text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -206,19 +236,19 @@ export default function HomePage() {
       {/* HOW IT WORKS */}
       <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-indigo-400 text-sm font-semibold uppercase tracking-widest mb-3">How it works</p>
-          <h2 className="text-4xl font-black mb-16">Up and running in 3 steps</h2>
+          <p className="text-[#A6C8FF] text-sm font-semibold uppercase tracking-widest mb-3">How it works</p>
+          <h2 className="text-4xl font-black mb-16 text-white/96">Up and running in 3 steps</h2>
           <div className="grid sm:grid-cols-3 gap-6 text-left">
             {STEPS.map((s, i) => (
-              <div key={s.n} className="relative bg-slate-900/50 border border-white/5 rounded-2xl p-7 hover:border-white/10 transition-colors">
+              <div key={s.n} className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl shadow-[0_16px_50px_rgba(0,0,0,0.18)] hover:border-white/15 transition-colors">
                 <div className={`w-9 h-9 ${s.color} rounded-xl flex items-center justify-center text-white font-black text-sm mb-5 shadow-lg`}>
                   {s.n}
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div className="hidden sm:block absolute top-11 -right-3 w-6 h-px bg-slate-700 z-10" />
+                  <div className="hidden sm:block absolute top-11 -right-3 w-6 h-px bg-white/10 z-10" />
                 )}
-                <h3 className="font-bold text-white mb-2">{s.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{s.desc}</p>
+                <h3 className="font-bold text-white/95 mb-2">{s.title}</h3>
+                <p className="text-slate-300/75 text-sm leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -228,16 +258,16 @@ export default function HomePage() {
       {/* CTA */}
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl blur-2xl opacity-30" />
-          <div className="relative bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl p-14 text-center overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-r from-[#A6C8FF]/20 via-[#5227FF]/20 to-[#FF9FFC]/20 rounded-3xl blur-2xl opacity-40" />
+          <div className="relative bg-[#0b1020]/55 border border-white/10 rounded-3xl p-14 text-center overflow-hidden backdrop-blur-2xl shadow-[0_20px_70px_rgba(0,0,0,0.3)]">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
             <div className="relative">
-              <h2 className="text-3xl sm:text-4xl font-black mb-4">Ready to get paid faster?</h2>
-              <p className="text-indigo-100 mb-8 text-base max-w-md mx-auto">Create your free account. No credit card required. Start sending AI reminders in minutes.</p>
+              <h2 className="text-3xl sm:text-4xl font-black mb-4 text-white/96">Ready to get paid faster?</h2>
+              <p className="text-slate-300/80 mb-8 text-base max-w-md mx-auto">Create your free account. No credit card required. Start sending AI reminders in minutes.</p>
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 bg-white text-indigo-700 font-bold px-8 py-3.5 rounded-xl text-sm hover:bg-indigo-50 transition-colors shadow-xl"
+                className="inline-flex items-center gap-2 bg-white text-[#0a0a0f] font-bold px-8 py-3.5 rounded-xl text-sm hover:bg-white/90 transition-colors shadow-xl"
               >
                 Create free account
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,20 +283,21 @@ export default function HomePage() {
       <footer className="border-t border-white/5 py-10 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-lg flex items-center justify-center">
+            <div className="w-7 h-7 bg-linear-to-br from-[#A6C8FF] to-[#FF9FFC] rounded-lg flex items-center justify-center">
               <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
               </svg>
             </div>
-            <span className="font-bold text-sm text-white">CollectAI</span>
+            <span className="font-bold text-sm text-white/95">CollectAI</span>
           </div>
-          <p className="text-slate-600 text-sm">AI-powered invoice collection for freelancers and small businesses.</p>
+          <p className="text-slate-400 text-sm">AI-powered invoice collection for freelancers and small businesses.</p>
           <div className="flex gap-5">
-            <Link to="/login" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">Sign in</Link>
-            <Link to="/register" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">Register</Link>
+            <Link to="/login" className="text-slate-400 hover:text-white text-sm transition-colors">Sign in</Link>
+            <Link to="/register" className="text-slate-400 hover:text-white text-sm transition-colors">Register</Link>
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
