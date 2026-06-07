@@ -9,6 +9,7 @@ export const generateReminderMessage = async (
   res
 ) => {
   try {
+<<<<<<< Updated upstream
     const invoice = await Invoice.findOne({
       _id: req.params.id,
       user: req.user._id,
@@ -18,6 +19,48 @@ export const generateReminderMessage = async (
       return res.status(404).json({
         message: "Invoice not found",
       });
+=======
+    if (!process.env.GROQ_API_KEY) {
+      return res.status(503).json({ message: 'Groq API key not configured' });
+    }
+
+    const invoice = await Invoice.findOne({ _id: req.params.id, user: req.user._id });
+    if (!invoice) {
+      return res.status(404).json({ message: 'Invoice not found' });
+    }
+
+    const { default: OpenAI } = await import('openai');
+    const openai = new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: 'https://api.groq.com/openai/v1',
+    });
+
+    const daysOverdue = Math.max(
+      0,
+      Math.floor((new Date() - new Date(invoice.dueDate)) / (1000 * 60 * 60 * 24))
+    );
+
+    const prompt = [
+      'Generate a professional payment reminder for this invoice:',
+      'Client: ' + invoice.clientName,
+      'Amount: INR ' + invoice.amount,
+      'Due: ' + new Date(invoice.dueDate).toDateString(),
+      invoice.paymentLink ? 'Pay link: ' + invoice.paymentLink : 'No payment link provided',
+      daysOverdue > 0 ? 'Days Overdue: ' + daysOverdue : 'Upcoming payment',
+      'Prior reminders: ' + invoice.remainderCount,
+      'Write 2-3 sentences, address client by name, firm but polite.',
+    ].join('\n');
+
+    const completion = await openai.chat.completions.create({
+      model: 'llama3-8b-8192',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 250,
+    });
+
+    const message = completion?.choices?.[0]?.message?.content?.trim();
+    if (!message) {
+      return res.status(502).json({ message: 'Failed to generate reminder from Groq response' });
+>>>>>>> Stashed changes
     }
 
     // Generate AI Reminder
