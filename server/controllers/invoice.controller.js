@@ -1,21 +1,5 @@
 import Invoice from "../models/invoice.model.js";
-import User from "../models/user.model.js";
-
-
-const attachRecipientStatus = async (invoice) => {
-  const recipient = await User.findOne({ email: invoice.clientEmail }).select('name email');
-
-  return {
-    ...invoice.toObject(),
-    recipientOnPlatform: recipient
-      ? {
-          name: recipient.name,
-          email: recipient.email,
-        }
-      : null,
-  };
-};
-
+import { attachRecipientStatus } from "../services/invoice.service.js";
 
 export const createInvoice = async (req, res) => {
 
@@ -132,20 +116,14 @@ export const updateInvoice = async (req, res) => {
 
     }
 
-
-
-    const { clientName, clientEmail, amount, dueDate, description, status, paymentLink } = req.body;
-
-
-
     const updatedInvoice = await Invoice.findByIdAndUpdate(
 
       invoice._id,
-
-      { clientName, clientEmail, amount, dueDate, description, status, paymentLink },
-
-      { new: true, runValidators: true }
-
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
     );
 
 
@@ -157,7 +135,7 @@ export const updateInvoice = async (req, res) => {
 
   } catch (error) {
 
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: "Internal server error" });
 
   }
 
