@@ -173,3 +173,18 @@ export const deleteInvoice = async (req, res) => {
 
 };
 
+export const getMyInvoices = async (req, res) => {
+
+  try { 
+    const invoices = await Invoice.find({
+      clientEmail: req.user.email,
+      status: { $ne: "paid" }
+    }).sort({ dueDate: 1 });
+
+    res.status(200).json({ invoices });
+
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+
+}
