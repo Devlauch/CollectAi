@@ -176,9 +176,16 @@ export const deleteInvoice = async (req, res) => {
 // Invoices where the logged-in user is the CLIENT (sent to them by someone else)
 export const getReceivedInvoices = async (req, res) => {
   try {
-    const invoices = await Invoice.find({ clientEmail: req.user.email })
+    console.log("Logged in email:", req.user.email);
+
+    const invoices = await Invoice.find({
+      clientEmail: req.user.email,
+    })
       .sort({ createdAt: -1 })
-      .populate('user', 'name email');
+      .populate("user", "name email");
+
+    console.log("Found invoices:", invoices.length);
+
     res.status(200).json({ invoices });
   } catch (error) {
     res.status(400).json({ message: error.message });

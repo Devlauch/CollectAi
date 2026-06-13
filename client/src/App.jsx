@@ -11,6 +11,7 @@ import InvoiceDetailPage from './pages/InvoiceDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 import PaymentsPage from './pages/PaymentsPage';
 import MyInvoicesPage from './pages/MyInvoicesPage';
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/payments" element={<ProtectedRoute><PaymentsPage /></ProtectedRoute>} />
           <Route path="/invoices/new" element={<ProtectedRoute><CreateInvoicePage /></ProtectedRoute>} />
           <Route path="/invoices/:id" element={<ProtectedRoute><InvoiceDetailPage /></ProtectedRoute>} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

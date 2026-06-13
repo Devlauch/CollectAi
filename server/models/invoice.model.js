@@ -45,6 +45,20 @@ const invoiceSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    cashfreeOrderId: {
+        type: String,
+        default: ""
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['PENDING', 'PAID', 'FAILED'],
+        default: 'PENDING'
+    },
+    paidAt: {
+        type: Date,
+        default: null
+    }
+
 }, { timestamps: true });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
