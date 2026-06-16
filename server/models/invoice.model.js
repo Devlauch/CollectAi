@@ -16,6 +16,11 @@ const invoiceSchema = new mongoose.Schema({
         required: true,
         lowercase: true
     },
+    clientPhone: {
+        type: String,
+        trim: true,
+        default: ""
+    },
     amount: {
         type: Number,
         required: true,

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Invoice from "../models/invoice.model.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { generateReminderMessageAI } from "../services/ai.service.js";
+import { sendWhatsApp } from "../services/whatsapp.service.js";
 
 export const generateReminderMessage = async (req, res) => {
   try {
@@ -26,6 +27,9 @@ export const generateReminderMessage = async (req, res) => {
     `;
 
     await sendEmail({ to: invoice.clientEmail, subject, html });
+    if(invoice.clientPhone) {
+      await sendWhatsApp(invoice.clientPhone, message);
+    }
 
     await Invoice.findByIdAndUpdate(invoice._id, {
       $inc: { reminderCount: 1 },
@@ -36,6 +40,7 @@ export const generateReminderMessage = async (req, res) => {
       success: true,
       aiMessage: message,
       emailSentTo: invoice.clientEmail,
+      whatsappSentTo: invoice.clientPhone,
     });
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {

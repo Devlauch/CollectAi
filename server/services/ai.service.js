@@ -20,24 +20,21 @@ export const generateReminderMessageAI = async (invoice) => {
   );
 
   const prompt = `
-You are an accounts receivable assistant.
-
-Generate a professional payment reminder email.
-
-Client Name: ${invoice.clientName}
-Invoice Amount: INR ${invoice.amount}
-Due Date: ${new Date(invoice.dueDate).toDateString()}
-Days Overdue: ${daysOverdue}
-Payment Link: ${invoice.paymentLink || "Not Provided"}
-
-Rules:
-1. Address the client by name.
-2. Be professional and polite.
-3. Mention the invoice amount.
-4. Request payment as soon as possible.
-5. Keep the email under 150 words.
-6. Do not use markdown.
-`;
+    You are an accounts receivable assistant.
+    Generate a professional payment reminder email.
+    Client Name: ${invoice.clientName}
+    Invoice Amount: INR ${invoice.amount}
+    Due Date: ${new Date(invoice.dueDate).toDateString()}
+    Days Overdue: ${daysOverdue}
+    Payment Link: ${invoice.paymentLink || "Not Provided"}
+    Rules:
+    1. Address the client by name.
+    2. Be professional and polite.
+    3. Mention the invoice amount.
+    4. Request payment as soon as possible.
+    5. Keep the email under 150 words.
+    6. Do not use markdown.
+    `;
 
   const completion = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",

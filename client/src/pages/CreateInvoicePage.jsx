@@ -7,6 +7,7 @@ export default function CreateInvoicePage() {
   const [form, setForm] = useState({
     clientName: '',
     clientEmail: '',
+    clientPhone: '',
     amount: '',
     dueDate: '',
     description: '',
@@ -82,6 +83,18 @@ export default function CreateInvoicePage() {
                     onChange={handleChange}
                     className={inputCls}
                     placeholder="client@example.com"
+                  />
+                </div>
+                <div>
+                  <label className={labelCls}>Client Phone *</label>
+                  <input
+                    type="tel"
+                    name="clientPhone"
+                    required
+                    value={form.clientPhone}
+                    onChange={handleChange}
+                    className={inputCls}
+                    placeholder="+91 98765 43210"
                   />
                 </div>
               </div>
