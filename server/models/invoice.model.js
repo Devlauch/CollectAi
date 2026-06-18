@@ -37,7 +37,7 @@ const invoiceSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    remainderCount: {
+    reminderCount: {
         type: Number,
         default: 0
     },

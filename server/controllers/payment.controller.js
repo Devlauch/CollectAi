@@ -1,10 +1,6 @@
 import Cashfree from "../config/cashfree.js";
 import Invoice from "../models/invoice.model.js";
 
-console.log("Cashfree object:", Cashfree);
-console.log("PGCreateOrder:", Cashfree.PGCreateOrder);
-console.log("PGFetchOrder:", Cashfree.PGFetchOrder);
-
 export const createOrder = async (req, res) => {
   try {
     const { invoiceId } = req.body;
@@ -18,41 +14,28 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    const orderId =
-      "INV_" +
-      invoice._id +
-      "_" +
-      Date.now();
+    const orderId = "INV_" + invoice._id + "_" + Date.now();
+    const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
 
     const request = {
       order_amount: invoice.amount,
       order_currency: "INR",
       order_id: orderId,
-
       customer_details: {
         customer_id: invoice._id.toString(),
         customer_name: invoice.clientName,
         customer_email: invoice.clientEmail,
-        customer_phone: "9999999999",
+        customer_phone: invoice.clientPhone || "9999999999",
       },
-
       order_meta: {
-        return_url:
-        "http://localhost:5173/payment-success?order_id={order_id}",
+        return_url: `${clientUrl}/payment-success?order_id={order_id}`,
       },
-      
     };
-
-    console.log("REQUEST:");
-    console.log(JSON.stringify(request, null, 2));
 
     const response = await Cashfree.PGCreateOrder(
       Cashfree.XApiVersion,
       request
     );
-
-    console.log("RESPONSE:");
-    console.log(response);
 
     invoice.cashfreeOrderId = orderId;
     await invoice.save();
@@ -148,8 +131,12 @@ export const cashfreeWebhook = async (
 
       if (invoice) {
         invoice.status = "paid";
+<<<<<<< HEAD
         invoice.paymentStatus =
           "PAID";
+=======
+        invoice.paymentStatus = "PAID";
+>>>>>>> 0075cca70ccefa1b268a521e942dfffd345596f1
         invoice.paidAt = new Date();
 
         await invoice.save();

@@ -10,9 +10,10 @@ export const createInvoice = async (req, res) => {
 
 
     if (!clientName || !clientEmail || !amount || !dueDate) {
-
       return res.status(400).json({ message: 'All fields are required' });
-
+    }
+    if (Number(amount) <= 0) {
+      return res.status(400).json({ message: 'Amount must be greater than 0' });
     }
 
 
@@ -116,14 +117,11 @@ export const updateInvoice = async (req, res) => {
 
     }
 
+    const { clientName, clientEmail, amount, dueDate, description, paymentLink, status } = req.body;
     const updatedInvoice = await Invoice.findByIdAndUpdate(
-
       invoice._id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
+      { clientName, clientEmail, amount, dueDate, description, paymentLink, status },
+      { new: true, runValidators: true }
     );
 
 
@@ -134,9 +132,7 @@ export const updateInvoice = async (req, res) => {
     });
 
   } catch (error) {
-
-    res.status(400).json({ message: "Internal server error" });
-
+    res.status(400).json({ message: error.message });
   }
 
 };
@@ -176,15 +172,9 @@ export const deleteInvoice = async (req, res) => {
 // Invoices where the logged-in user is the CLIENT (sent to them by someone else)
 export const getReceivedInvoices = async (req, res) => {
   try {
-    console.log("Logged in email:", req.user.email);
-
-    const invoices = await Invoice.find({
-      clientEmail: req.user.email,
-    })
+    const invoices = await Invoice.find({ clientEmail: req.user.email })
       .sort({ createdAt: -1 })
       .populate("user", "name email");
-
-    console.log("Found invoices:", invoices.length);
 
     res.status(200).json({ invoices });
   } catch (error) {

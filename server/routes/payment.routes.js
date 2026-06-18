@@ -1,5 +1,5 @@
 import express from "express";
-
+import { protect } from "../middleware/auth.middleware.js";
 import {
   createOrder,
   verifyPayment,
@@ -8,19 +8,8 @@ import {
 
 const router = express.Router();
 
-router.post(
-  "/create-order",
-  createOrder
-);
-
-router.get(
-  "/verify/:orderId",
-  verifyPayment
-);
-
-router.post(
-  "/webhook",
-  cashfreeWebhook
-);
+router.post("/create-order", protect, createOrder);
+router.get("/verify/:orderId", protect, verifyPayment);
+router.post("/webhook", cashfreeWebhook);
 
 export default router;

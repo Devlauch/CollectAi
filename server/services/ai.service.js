@@ -51,5 +51,7 @@ Rules:
     max_tokens: 250,
   });
 
-  return completion.choices[0].message.content.trim();
+  const content = completion?.choices?.[0]?.message?.content;
+  if (!content) throw new Error("Empty response from Groq");
+  return content.trim();
 };
