@@ -37,7 +37,7 @@ const invoiceSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    remainderCount: {
+    reminderCount: {
         type: Number,
         default: 0
     },
@@ -45,6 +45,20 @@ const invoiceSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    cashfreeOrderId: {
+        type: String,
+        default: ""
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['PENDING', 'PAID', 'FAILED'],
+        default: 'PENDING'
+    },
+    paidAt: {
+        type: Date,
+        default: null
+    }
+
 }, { timestamps: true });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);

@@ -13,7 +13,7 @@
   "type": "module",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "cashfree-pg": "^6.0.4",
+    "cashfree-pg": "^4.3.10",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",

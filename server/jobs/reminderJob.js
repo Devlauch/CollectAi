@@ -1,34 +1,13 @@
 import cron from 'node-cron';
 import Invoice from '../models/invoice.model.js';
-import User from '../models/user.model.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import { generateReminderMessageAI } from '../services/ai.service.js';
 
 const generateReminderText = async (invoice) => {
-  if (!process.env.OPENAI_API_KEY) return null;
   try {
-    const { default: OpenAI } = await import('openai');
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const daysOverdue = Math.max(
-      0,
-      Math.floor((new Date() - new Date(invoice.dueDate)) / (1000 * 60 * 60 * 24))
-    );
-    const prompt = [
-      'Generate a professional payment reminder for this invoice:',
-      'Client: ' + invoice.clientName,
-      'Amount: INR ' + invoice.amount,
-      'Due: ' + new Date(invoice.dueDate).toDateString(),
-      invoice.paymentLink ? 'Pay link: ' + invoice.paymentLink : '',
-      'Days Overdue: ' + daysOverdue,
-      'Write 2-3 sentences, address client by name, firm but polite.',
-    ].join('\n');
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 200,
-    });
-    return completion?.choices?.[0]?.message?.content?.trim() || null;
+    return await generateReminderMessageAI(invoice);
   } catch (err) {
-    console.error('[cron] OpenAI error:', err.message);
+    console.error('[cron] Groq error:', err.message);
     return null;
   }
 };
@@ -66,7 +45,7 @@ const sendOverdueReminders = async () => {
       await sendEmail({ to: inv.clientEmail, subject, html });
       await Invoice.findByIdAndUpdate(inv._id, {
         lastEmailSentAt: new Date(),
-        $inc: { remainderCount: 1 },
+        $inc: { reminderCount: 1 },
       });
       console.log(`[cron] Reminder sent → ${inv.clientEmail}`);
     } catch (err) {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import StatusBadge from '../components/StatusBadge';
 import api from '../services/api';
+import { load } from "@cashfreepayments/cashfree-js";
 
 const COLLECT_TABS = [
   { key: 'unpaid', label: 'Needs Payment' },
@@ -46,6 +47,30 @@ export default function PaymentsPage() {
       alert('Failed to update');
     } finally {
       setMarkingId(null);
+    }
+  };
+
+  // handle pay now
+  const handlePayNow = async (invoice) => {
+    try {
+      const res = await api.post("/payment/create-order", {
+        invoiceId: invoice._id,
+      });
+
+      console.log(res.data);
+
+      const cashfree = await load({
+        mode: "sandbox",
+      });
+
+      await cashfree.checkout({
+        paymentSessionId: res.data.payment_session_id,
+        redirectTarget: "_self",
+      });
+
+    } catch (err) {
+      console.error(err);
+      alert("Payment failed");
     }
   };
 
@@ -170,6 +195,7 @@ export default function PaymentsPage() {
             daysLabel={daysLabel}
             handleCopy={handleCopy}
             copiedId={copiedId}
+            handlePayNow={handlePayNow}
           />
         )}
       </div>
@@ -290,7 +316,7 @@ function CollectingView({ invoices, rows, tab, setTab, counts, outstanding, coll
 
 // ── To Pay view (bills sent to you by others) ─────────────────────────────────
 
-function ToPayView({ received, recUnpaid, recPaid, recOwed, daysLabel, handleCopy, copiedId }) {
+function ToPayView({ received, recUnpaid, recPaid, recOwed, daysLabel, handleCopy, copiedId, handlePayNow }) {
   if (received.length === 0) {
     return (
       <div className="bg-slate-900 border border-white/5 rounded-2xl py-20 text-center">
@@ -348,25 +374,12 @@ function ToPayView({ received, recUnpaid, recPaid, recOwed, daysLabel, handleCop
                   </div>
                   <div><StatusBadge status={inv.status} /></div>
                   <div className="flex items-center gap-2 md:justify-end flex-wrap">
-                    {inv.paymentLink ? (
-                      <>
-                        <button onClick={() => handleCopy(inv)}
-                          className="flex items-center gap-1.5 text-xs border border-white/10 hover:border-white/20 bg-white/5 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg transition-all">
-                          {copiedId === inv._id ? (
-                            <><svg className="w-3.5 h-3.5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg><span className="text-green-400">Copied</span></>
-                          ) : (
-                            <><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>Copy</>
-                          )}
-                        </button>
-                        <a href={inv.paymentLink} target="_blank" rel="noreferrer"
-                          className="flex items-center gap-1.5 text-xs border border-rose-500/30 hover:border-rose-400 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-white font-semibold px-3 py-1.5 rounded-lg transition-all">
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                          Pay Now
-                        </a>
-                      </>
-                    ) : (
-                      <span className="text-xs text-slate-600 italic">No pay link yet</span>
-                    )}
+                    <button
+                      onClick={() => handlePayNow(inv)}
+                      className="flex items-center gap-1.5 text-xs border border-rose-500/30 hover:border-rose-400 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-white font-semibold px-3 py-1.5 rounded-lg transition-all"
+                    >
+                      Pay Now
+                    </button>
                   </div>
                 </div>
               );
