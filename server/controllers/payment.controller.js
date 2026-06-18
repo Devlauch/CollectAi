@@ -131,12 +131,8 @@ export const cashfreeWebhook = async (
 
       if (invoice) {
         invoice.status = "paid";
-<<<<<<< HEAD
         invoice.paymentStatus =
           "PAID";
-=======
-        invoice.paymentStatus = "PAID";
->>>>>>> 0075cca70ccefa1b268a521e942dfffd345596f1
         invoice.paidAt = new Date();
 
         await invoice.save();
