@@ -3,6 +3,11 @@
 server/.env
 client/.env
 
+.wwebjs_auth
+.wwebjs_cache
+.wwebjs_auth/
+.wwebjs_cache/
+
 # Dependencies
 node_modules/
 client/node_modules/

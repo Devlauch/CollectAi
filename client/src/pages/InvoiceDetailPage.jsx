@@ -58,7 +58,7 @@ export default function InvoiceDetailPage() {
     setAiLoading(true);
     setAiMessage('');
     try {
-      const res = await api.post('/invoices/' + id + '/remind');
+      const res = await api.post('/reminders/' + id + '/remind');
       setAiMessage(res.data.message);
       setInvoice(prev => ({ ...prev, remainderCount: (prev.remainderCount || 0) + 1 }));
     } catch (err) {

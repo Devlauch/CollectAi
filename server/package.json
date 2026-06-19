@@ -24,6 +24,8 @@
     "mongoose": "^9.6.3",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.14",
-    "openai": "^4.52.7"
+    "openai": "^4.52.7",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.34.7"
   }
 }
