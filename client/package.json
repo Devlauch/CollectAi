@@ -14,9 +14,11 @@
     "@tailwindcss/vite": "^4.3.0",
     "axios": "^1.7.9",
     "cashfree-pg": "^4.3.10",
+    "lucide-react": "^1.21.0",
     "ogl": "^1.0.11",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-qr-code": "^2.2.0",
     "react-router-dom": "^7.1.5",
     "tailwindcss": "^4.3.0"
   },

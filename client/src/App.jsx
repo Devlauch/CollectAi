@@ -12,6 +12,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import PaymentsPage from './pages/PaymentsPage';
 import MyInvoicesPage from './pages/MyInvoicesPage';
 import PaymentSuccess from "./pages/PaymentSuccess";
+import WhatsApp from './pages/WhatsApp';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/invoices/new" element={<ProtectedRoute><CreateInvoicePage /></ProtectedRoute>} />
           <Route path="/invoices/:id" element={<ProtectedRoute><InvoiceDetailPage /></ProtectedRoute>} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/whatsapp" element={<ProtectedRoute><WhatsApp /></ProtectedRoute>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

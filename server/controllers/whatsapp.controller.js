@@ -26,6 +26,9 @@ export const connect = async (req, res) => {
 export const status = async (req, res) => {
   try {
 
+    console.log("Logged in user:", req.user._id);
+  console.log("Logged in email:", req.user.email);
+
     const result = await getStatus(
       req.user._id.toString()
     );
@@ -33,6 +36,7 @@ export const status = async (req, res) => {
     return res.status(200).json(result);
 
   } catch (err) {
+    console.error(err);
 
     return res.status(500).json({
       success: false,

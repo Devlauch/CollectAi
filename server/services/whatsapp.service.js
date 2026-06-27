@@ -130,7 +130,10 @@ export const connectWhatsApp = async (userId) => {
 };
 
 export const getStatus = async (userId) => {
+  console.log("Requested userId:", userId);
   const session = await WhatsAppSession.findOne({ user: userId });
+
+  console.log("Session found:", session);
 
   if (!session) {
     return {
@@ -150,6 +153,8 @@ export const getStatus = async (userId) => {
 
 export const getQRCode = async (userId) => {
   const session = await WhatsAppSession.findOne({ user: userId });
+  console.log("Requested userId:", userId);
+  console.log("Session found:", session);
 
   if (!session) {
     return null;
