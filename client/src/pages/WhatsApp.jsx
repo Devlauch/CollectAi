@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 const WhatsApp = () => {
   const [status, setStatus] = useState("not_connected");
@@ -11,6 +12,8 @@ const WhatsApp = () => {
   const [qrCode, setQrCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const refreshWhatsApp = async () => {
   try {
@@ -110,90 +113,94 @@ const WhatsApp = () => {
 
 
       return (
-    <div className="min-h-screen bg-[#0f172a] text-white p-8">
+      <div className="min-h-screen bg-[#0f172a] text-white p-8">
 
-      {/* Header */}
+        {/* Header */}
 
-      <div className="mb-10">
+        <div className="mb-10">
 
-        <h1 className="text-4xl font-bold">
-          WhatsApp Integration
-        </h1>
+          <svg onClick={() => navigate("/dashboard")} className="w-5 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
 
-        <p className="text-slate-400 mt-2 max-w-2xl">
-          Connect your WhatsApp account to automatically send
-          AI-generated payment reminders directly to your
-          clients.
-        </p>
+          <h1 className="text-4xl font-bold">
+            WhatsApp Integration
+          </h1>
 
-      </div>
+          <p className="text-slate-400 mt-2 max-w-2xl">
+            Connect your WhatsApp account to automatically send
+            AI-generated payment reminders directly to your
+            clients.
+          </p>
 
-      {error && (
-        <div className="mb-6 rounded-xl bg-red-500/10 border border-red-500 text-red-400 px-5 py-3">
-          {error}
         </div>
-      )}
 
-      <div className="grid lg:grid-cols-2 gap-8">
-
-        {/* LEFT CARD */}
-
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-7">
-
-          <div className="flex justify-between items-center mb-8">
-
-            <h2 className="text-2xl font-semibold">
-              Connection Status
-            </h2>
-
-            <span
-              className={`px-4 py-1 rounded-full text-sm font-semibold ${statusColor}`}
-            >
-              {connected ? "Connected" : "Disconnected"}
-            </span>
-
+        {error && (
+          <div className="mb-6 rounded-xl bg-red-500/10 border border-red-500 text-red-400 px-5 py-3">
+            {error}
           </div>
+        )}
 
-          <div className="space-y-6">
+        <div className="grid lg:grid-cols-2 gap-8">
 
-            <div>
-              <p className="text-slate-400 text-sm">
-                {phone ? "Phone Number" : "No Phone Connected"}
-              </p>
+          {/* LEFT CARD */}
 
-              <p className="text-lg font-medium">
-                {phone || "-"}
-              </p>
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-7">
+
+            <div className="flex justify-between items-center mb-8">
+
+              <h2 className="text-2xl font-semibold">
+                Connection Status
+              </h2>
+
+              <span
+                className={`px-4 py-1 rounded-full text-sm font-semibold ${statusColor}`}
+              >
+                {connected ? "Connected" : "Disconnected"}
+              </span>
+
             </div>
 
-            <div>
-              <p className="text-slate-400 text-sm">
-                {profile ? "Profile Name" : "No Profile Connected"}
-              </p>
+            <div className="space-y-6">
 
-              <p className="text-lg font-medium">
-                {profile || "-"}
-              </p>
-            </div>
+              <div>
+                <p className="text-slate-400 text-sm">
+                  {phone ? "Phone Number" : "No Phone Connected"}
+                </p>
 
-            <div>
-              <p className="text-slate-400 text-sm">
-                {lastConnected ? "Last Connected" : "No Connection Time"}
-              </p>
+                <p className="text-lg font-medium">
+                  {phone || "-"}
+                </p>
+              </div>
 
-              <p className="text-lg font-medium">
-                {lastConnected
-                  ? new Date(lastConnected).toLocaleString()
-                  : "-"}
-              </p>
-            </div>
+              <div>
+                <p className="text-slate-400 text-sm">
+                  {profile ? "Profile Name" : "No Profile Connected"}
+                </p>
 
-            <div>
-              <p className="text-slate-400 text-sm">
-                {status ? "Current Status" : "No Status Available"}
-              </p>
+                <p className="text-lg font-medium">
+                  {profile || "-"}
+                </p>
+              </div>
 
-              <p className="capitalize text-lg">
+              <div>
+                <p className="text-slate-400 text-sm">
+                  {lastConnected ? "Last Connected" : "No Connection Time"}
+                </p>
+
+                <p className="text-lg font-medium">
+                  {lastConnected
+                    ? new Date(lastConnected).toLocaleString()
+                    : "-"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-slate-400 text-sm">
+                  {status ? "Current Status" : "No Status Available"}
+                </p>
+
+                <p className="capitalize text-lg">
                 {status ? status.replace("_", " ") : "-"}
               </p>
             </div>
