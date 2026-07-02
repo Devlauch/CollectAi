@@ -1,6 +1,7 @@
 # Stage 1: build React app
 FROM node:20-alpine AS builder
 WORKDIR /app
+dofjefe
 COPY package*.json ./
 RUN npm install
 COPY . .
