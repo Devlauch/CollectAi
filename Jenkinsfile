@@ -142,7 +142,7 @@ pipeline {
                                     fi
                                     if [ -n "$REAL_PORT" ] && [ "$REAL_PORT" != "3000" ]; then
                                         echo "[devpilot] App is on port $REAL_PORT, expected 3000 — fixing docker-compose.yml..."
-                                        ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 ubuntu@44.200.212.224 "sed -i "s|3000:3000|3000:$REAL_PORT|g" ~/devpilot-app/docker-compose.yml && cd ~/devpilot-app && $COMPOSE_CMD up -d --force-recreate backend"
+                                        ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 ubuntu@44.200.212.224 "sed -i 's|3000:3000|3000:$REAL_PORT|g' ~/devpilot-app/docker-compose.yml && cd ~/devpilot-app && $COMPOSE_CMD up -d --force-recreate backend"
                                         sleep 8
                                         HTTP_CODE2=$(ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 ubuntu@44.200.212.224 "curl -s -o /dev/null -w '%{http_code}' http://localhost:3000 --max-time 5" 2>/dev/null || echo "000")
                                         if [ "$HTTP_CODE2" != "000" ]; then
